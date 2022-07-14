@@ -1,4 +1,7 @@
 import requests
+from connect_db import conecta_db
+
+
 
 
 class ContractApiMonetization():
@@ -14,15 +17,59 @@ class ContractApiMonetization():
 
     def get_contract_by_id(self, id):
         #Pesquisa no banco de dados por id e devolve um contrato de api
-        return {"id": "dhasjdfgaihsdg", "name": "API Pokemon", "max_quantity_contract": "100000", "amount": "100ETH", "counter_requests": 100}
+        db = conecta_db()
+        connection = db.cursor()
+        query = f"""
+        SELECT * FROM "public"."contract_api_monetization" WHERE id = {id}
+        """
+        try:
+            connection.execute(query)
+            result = connection.fetchall()
+            connection.close()
+            return result
+
+        except Exception as e:
+            print(f"Exception: {e}")
+            db.rollback()
+            connection.close()
+        
+
     
     def get_contracts(self):
         #Retorna todos os contratos de APIS
-        return None
+        db = conecta_db()
+        connection = db.cursor()
+        query = f"""
+        SELECT * FROM "public"."contract_api_monetization"
+        """
+        try:
+            connection.execute(query)
+            result = connection.fetchall()
+            connection.close()
+            return result
+
+        except Exception as e:
+            print(f"Exception: {e}")
+            db.rollback()
+            connection.close()
     
     def get_max_quantity_contract_by_id(self, id):
         # retorna o valor maximo de requisições do contrato
-        return self.max_quantity_contract
+        db = conecta_db()
+        connection = db.cursor()
+        query = f"""
+        SELECT max_quantity_contract FROM "public"."contract_api_monetization" WHERE id = {id}
+        """
+        try:
+            connection.execute(query)
+            result = connection.fetchall()
+            connection.close()
+            return result[0][0] #Tupla dentro de uma lista
+
+        except Exception as e:
+            print(f"Exception: {e}")
+            db.rollback()
+            connection.close()
     
     def get_counter_requests_by_id(self, id, api, route):
         #Pesquisa no banco quantas requisições já foram feitas
@@ -35,3 +82,6 @@ class ContractApiMonetization():
         else:
             # Efetua o Redirect para a API e Rota solicitada
             return requests.get("https://www.google.com").content
+
+test = ContractApiMonetization(100, "Dummy")
+print(test.get_max_quantity_contract_by_id(2))
