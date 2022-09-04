@@ -19,6 +19,13 @@ contract ApiContract {
         uint256 timestamp
     );
 
+    event MakeRequest(
+        address indexed buyer,
+        string apiName,
+        uint256 amount,
+        uint256 timestamp
+    );
+
     struct ApiStruct {
         string apiName;
         uint256 numberOfRequests;
@@ -75,12 +82,17 @@ contract ApiContract {
         require(msg.value > 0, "Ethers cannot be zero!");
         uint256 priceOfRequests = sales[key].priceOfRequests;
         address seller = sales[key].seller;
+
         uint256 tax = (priceOfRequests / 100) * 10;
+        uint256 finalValue = priceOfRequests - tax;
 
         withdrawMoneyTo(intermediaryAddress, tax);
-        withdrawMoneyTo(seller, priceOfRequests - tax);
+        withdrawMoneyTo(seller, finalValue);
 
         sales[key].apis[_apiName].numberOfRequests += 1;
+
+        emit MakeRequest(msg.sender, _apiName, finalValue, block.timestamp);
+
         return true;
     }
 
