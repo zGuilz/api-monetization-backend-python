@@ -30,6 +30,7 @@ contract ApiContract {
         string apiName;
         uint256 priceOfRequests;
         uint256 numberOfRequests;
+        bool exists;
         uint256 timestamp;
         mapping(string => ApiStruct) apis;
     }
@@ -60,6 +61,7 @@ contract ApiContract {
         sale.apiName = _apiName;
         sale.priceOfRequests = _priceOfRequests;
         sale.numberOfRequests = _numberOfRequests;
+        sale.exists = true;
         sale.timestamp = block.timestamp;
         sale.apis[_apiName] = api;
 
@@ -69,6 +71,7 @@ contract ApiContract {
     }
 
     function makeRequest(address key, string memory _apiName) public payable returns (bool success) {
+        require(sales[msg.sender].exists, "You dont have api");
         require(msg.value > 0, "Ethers cannot be zero!");
         uint256 priceOfRequests = sales[key].priceOfRequests;
         address seller = sales[key].seller;
