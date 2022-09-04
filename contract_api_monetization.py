@@ -2,8 +2,6 @@ import requests
 from connect_db import conecta_db
 
 
-
-
 class ContractApiMonetization():
 
     def get_id_by_name(self, name):
