@@ -14,16 +14,21 @@ const makeRequestBlockchain = async () => {
 
     if (networkData) {
       const contract = new web3.eth.Contract(contractApi.abi, networkData.address)
-      const buyer = "0x6A04a670e6e7167d6e465CD677872A91ed0fF98B"
-      const amount = web3.utils.toWei("1", 'ether')
+      const buyer = "0x01d0f47e384b603E499769e487C3BD0C686Aa6a8" //TODO: PEGAR ADDRESS DINAMICO
+      const amount = web3.utils.toWei("0.04", 'ether') //TODO: PEGAR VALOR DINAMICO
       try {
-        await contract.methods
-        .makeRequest(buyer, "ursinho99")
+        const response = await contract.methods
+        .makeRequest(buyer, "UrsinhoAPI") //TODO: PEGAR APINAME DINAMICO
         .send({ from: buyer, value: amount })
-        console.log("passei")
         return contract
       } catch (error) {
-        console.log(error)
+        var response = Object.keys(error.data)[0]
+        if (!error.data[`${response}`].reason) {
+          throw "Não há fundos na sua carteira para essa requisição"
+        } else {
+          throw error.data[`${response}`].reason
+        }
+        
       }
      
     }
@@ -42,7 +47,13 @@ router.get('/', function(req, res) {
 
 router.post('/', async function(req, res) {
     let responseApi = ""
-    await makeRequestBlockchain()
+    try {
+      await makeRequestBlockchain()
+    } catch(error){
+      console.log(error)
+      res.json(error)
+      return error
+    }
     if (req.query.apiName == "viaCep") {
         let = await axios.get(`https://viacep.com.br/ws/${req.query.cep}/json/`)
         .then(function (response) {
