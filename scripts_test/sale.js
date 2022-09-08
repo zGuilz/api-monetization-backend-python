@@ -2,7 +2,7 @@ const ApiContract = artifacts.require("ApiContract");
 
 module.exports = async (callback) => {
   const [storeOwner, seller] = await web3.eth.getAccounts()
-	const buyer = '0x61B8e2d5cd1b0cb7a698671e716f5782bc8b80ef'
+	const buyer = '0x6A04a670e6e7167d6e465CD677872A91ed0fF98B'
   const amount = web3.utils.toWei('4', 'ether')
 
   const api = await ApiContract.deployed()
@@ -18,12 +18,12 @@ module.exports = async (callback) => {
 	let priceOfRequests = web3.utils.toWei("1", "ether")
 	let apiName = "ursinho"
 
-//   const sale = await api.createSale(
-// 		seller, 
-// 		priceOfRequests, 
-// 		apiName,
-// 		{from: buyer, value: priceOfRequests}
-// 	)
+  // const sale = await api.createSale(
+	// 	seller, 
+	// 	priceOfRequests, 
+	// 	apiName,
+	// 	{from: buyer, value: priceOfRequests}
+	// )
 
 	const inspectSale = await api.inspectSale(buyer)
 	console.log(inspectSale)
@@ -33,7 +33,7 @@ module.exports = async (callback) => {
 
 	await api.makeRequest(
 		buyer,
-		"ursinho",
+		"ursinho99",
 		{from: buyer, value: priceOfRequests}
 	)
 
