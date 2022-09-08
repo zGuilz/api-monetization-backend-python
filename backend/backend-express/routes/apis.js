@@ -5,7 +5,7 @@ var router = express.Router();
 const axios = require('axios').default;
 
 
-const makeRequestBlockchain = async () => {
+const makeRequestBlockchain = async (apiName) => {
     const Web3 = require('web3')
     const web3 = new Web3('ws://localhost:7545');
     var contractApi =  require('../shared/ApiContract.json')
@@ -18,7 +18,7 @@ const makeRequestBlockchain = async () => {
       const amount = web3.utils.toWei("0.04", 'ether') //TODO: PEGAR VALOR DINAMICO
       try {
         const response = await contract.methods
-        .makeRequest(buyer, "UrsinhoAPI") //TODO: PEGAR APINAME DINAMICO
+        .makeRequest(buyer, apiName) //TODO: PEGAR APINAME DINAMICO
         .send({ from: buyer, value: amount })
         return contract
       } catch (error) {
@@ -48,13 +48,13 @@ router.get('/', function(req, res) {
 router.post('/', async function(req, res) {
     let responseApi = ""
     try {
-      await makeRequestBlockchain()
+      await makeRequestBlockchain(req.query.apiName)
     } catch(error){
       console.log(error)
       res.json(error)
       return error
     }
-    if (req.query.apiName == "viaCep") {
+    if (req.query.apiName == "UrsinhoAPI") {
         let = await axios.get(`https://viacep.com.br/ws/${req.query.cep}/json/`)
         .then(function (response) {
             responseApi = response.data
@@ -66,14 +66,22 @@ router.post('/', async function(req, res) {
     }
 
     if (req.query.apiName == "pokemon") {
-        let = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`)
-        .then(function (response) {
-            responseApi = response.data
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
+      let responseApi = ""
+      try {
+        await makeRequestBlockchain()
+      } catch(error){
+        console.log(error)
+        res.json(error)
+        return error
+      }
+      let = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`)
+      .then(function (response) {
+          responseApi = response.data
+      })
+      .catch(function (error) {
+          // handle error
+          console.log(error);
+      })
     }
     
     res.json(responseApi);
