@@ -18,12 +18,26 @@ module.exports = async (callback) => {
 	let priceOfRequests = web3.utils.toWei("1", "ether")
 	let apiName = "ursinho"
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
   // const sale = await api.createSale(
 	// 	seller, 
 	// 	priceOfRequests, 
 	// 	apiName,
 	// 	{from: buyer, value: priceOfRequests}
 	// )
+=======
+=======
+>>>>>>> Stashed changes
+  const sale = await api.createSale(
+		seller, 
+		priceOfRequests, 
+		apiName
+	)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
 	const inspectSale = await api.inspectSale(buyer)
 	console.log(inspectSale)
@@ -31,14 +45,29 @@ module.exports = async (callback) => {
 	const inspectSaleApi = await api.inspectSaleApi(buyer, "ursinho")
 	console.log(inspectSaleApi)
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	await api.makeRequest(
 		buyer,
 		"ursinho99",
 		{from: buyer, value: priceOfRequests}
 	)
+=======
+=======
+>>>>>>> Stashed changes
+	// const errinho = await api.makeRequest(
+	// 	buyer,
+	// 	"ursinho12",
+	// 	{from: buyer, value: priceOfRequests}
+	// )
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
+	// console.log(errinho.data[0])	
 	const inspectSaleApi2 = await api.inspectSaleApi(buyer, "ursinho")
-	console.log(inspectSaleApi2)
+	// console.log(inspectSaleApi2)
 
   buyerBal = await web3.eth.getBalance(buyer)
   sellerBal = await web3.eth.getBalance(seller)

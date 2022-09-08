@@ -54,7 +54,7 @@ contract ApiContract {
         address _seller,
         uint256 _priceOfRequests,
         string memory _apiName
-    ) public payable returns (bool success)
+    ) public returns (bool success)
     {
         uint256 _numberOfRequests = 0;
 

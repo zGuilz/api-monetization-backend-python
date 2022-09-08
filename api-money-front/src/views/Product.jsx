@@ -13,7 +13,7 @@ const Product = () => {
   const [ethToUsd] = useGlobalState('ethToUsd')
 
   const handlePayWithEthers = () => {
-    const item = { ...product, buyer, price: 0 , account: '0x7a0ad64A592EA533C911A063228CfE00BE1C688A'}
+    const item = { ...product, buyer, price: 1 , account: '0x7a0ad64A592EA533C911A063228CfE00BE1C688A'}
     console.log(item)
     payWithEthers(item).then((res) => {
         if (res) setAlert('Vendido')
