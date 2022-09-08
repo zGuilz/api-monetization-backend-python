@@ -18,12 +18,12 @@ module.exports = async (callback) => {
 	let priceOfRequests = web3.utils.toWei("1", "ether")
 	let apiName = "ursinho"
 
-  // const sale = await api.createSale(
-	// 	seller, 
-	// 	priceOfRequests, 
-	// 	apiName,
-	// 	{from: buyer, value: priceOfRequests}
-	// )
+//   const sale = await api.createSale(
+// 		seller, 
+// 		priceOfRequests, 
+// 		apiName,
+// 		{from: buyer, value: priceOfRequests}
+// 	)
 
 	const inspectSale = await api.inspectSale(buyer)
 	console.log(inspectSale)

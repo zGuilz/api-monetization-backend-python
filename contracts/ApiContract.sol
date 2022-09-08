@@ -29,6 +29,7 @@ contract ApiContract {
     struct ApiStruct {
         string apiName;
         uint256 numberOfRequests;
+        bool exists;
     }
 
     struct SaleStruct {
@@ -59,7 +60,8 @@ contract ApiContract {
 
         ApiStruct memory api = ApiStruct(
             _apiName,
-            _numberOfRequests
+            _numberOfRequests,
+            true
         );
 
         SaleStruct storage sale = sales[msg.sender];
@@ -78,7 +80,8 @@ contract ApiContract {
     }
 
     function makeRequest(address key, string memory _apiName) public payable returns (bool success) {
-        require(sales[msg.sender].exists, "You dont have api");
+        require(sales[msg.sender].exists, "You dont have a contract");
+        require(sales[msg.sender].apis[_apiName].exists, "You dont have API");
         require(msg.value > 0, "Ethers cannot be zero!");
         uint256 priceOfRequests = sales[key].priceOfRequests;
         address seller = sales[key].seller;
