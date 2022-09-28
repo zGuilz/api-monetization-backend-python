@@ -43,7 +43,17 @@ contract ApiContract {
         mapping(string => ApiStruct) apis;
     }
 
+    struct CallingApi {
+        string url;
+        address caller;
+        string bodyOfRequest;
+        string method;
+        string headers;
+        uint256 timestamp;
+    }
+
     mapping(address => SaleStruct) sales;
+    CallingApi[] callsapi;
 
     constructor(string memory _intermediaryName, address _intermediaryAddress) {
         intermediaryName = _intermediaryName;
@@ -54,7 +64,7 @@ contract ApiContract {
         address _seller,
         uint256 _priceOfRequests,
         string memory _apiName
-    ) public returns (bool success)
+    ) public payable returns (bool success)
     {
         uint256 _numberOfRequests = 0;
 
@@ -79,12 +89,28 @@ contract ApiContract {
         return true;
     }
 
-    function makeRequest(address key, string memory _apiName) public payable returns (bool success) {
+    function makeRequest(
+        string memory _apiName,
+        string memory _url,
+        string memory _bodyOfRequest,
+        string memory _method,
+        string memory _headers
+    ) public payable returns (bool success) {
         require(sales[msg.sender].exists, "You dont have a contract");
         require(sales[msg.sender].apis[_apiName].exists, "You dont have API");
-        require(msg.value > 0, "Ethers cannot be zero!");
-        uint256 priceOfRequests = sales[key].priceOfRequests;
-        address seller = sales[key].seller;
+        uint256 priceOfRequests = sales[msg.sender].priceOfRequests;
+        address seller = sales[msg.sender].seller;
+
+        CallingApi memory callapi = CallingApi(
+            _url,
+            msg.sender,
+            _bodyOfRequest,
+            _method,
+            _headers,
+            block.timestamp
+        );
+
+        callsapi.push(callapi);
 
         uint256 tax = (priceOfRequests / 100) * 10;
         uint256 finalValue = priceOfRequests - tax;
@@ -92,10 +118,9 @@ contract ApiContract {
         withdrawMoneyTo(intermediaryAddress, tax);
         withdrawMoneyTo(seller, finalValue);
 
-        sales[key].apis[_apiName].numberOfRequests += 1;
+        sales[msg.sender].apis[_apiName].numberOfRequests += 1;
 
         emit MakeRequest(msg.sender, _apiName, finalValue, block.timestamp);
-
         return true;
     }
 

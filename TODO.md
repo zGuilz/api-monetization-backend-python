@@ -1,0 +1,4 @@
+ARRUMAR VALOR DA VENDA NO MAKEREQUEST, O FRONT Q ESTA COLOCANDO O VALOR
+
+
+mudança no tipo de contrato das apis

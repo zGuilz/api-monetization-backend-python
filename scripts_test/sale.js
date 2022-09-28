@@ -1,81 +1,91 @@
 const ApiContract = artifacts.require("ApiContract");
 
 module.exports = async (callback) => {
-  const [storeOwner, seller] = await web3.eth.getAccounts()
-	const buyer = '0x6A04a670e6e7167d6e465CD677872A91ed0fF98B'
-  const amount = web3.utils.toWei('4', 'ether')
+  const [storeOwner, seller] = await web3.eth.getAccounts();
+  const buyer = "0x8B50AF012d4f8c69f65AEEc89d82d4bccdE00Ad4";
+  const amount = web3.utils.toWei("4", "ether");
 
-  const api = await ApiContract.deployed()
+  const api = await ApiContract.deployed();
 
-  let buyerBal = await web3.eth.getBalance(buyer)
-  let sellerBal = await web3.eth.getBalance(seller)
-  let storeOwnerBal = await web3.eth.getBalance(storeOwner)
+  let buyerBal = await web3.eth.getBalance(buyer);
+  let sellerBal = await web3.eth.getBalance(seller);
+  let storeOwnerBal = await web3.eth.getBalance(storeOwner);
 
-  console.log(`Initial balance of buyer | ${web3.utils.fromWei(buyerBal.toString(), 'ether')}`)
-  console.log(`Initial balance of seller   | ${web3.utils.fromWei(sellerBal.toString(), 'ether')}`)
-  console.log(`Initial balance of storeOwner   | ${web3.utils.fromWei(storeOwnerBal.toString(), 'ether')}`)
+  console.log(
+    `Initial balance of buyer | ${web3.utils.fromWei(
+      buyerBal.toString(),
+      "ether"
+    )}`
+  );
+  console.log(
+    `Initial balance of seller   | ${web3.utils.fromWei(
+      sellerBal.toString(),
+      "ether"
+    )}`
+  );
+  console.log(
+    `Initial balance of storeOwner   | ${web3.utils.fromWei(
+      storeOwnerBal.toString(),
+      "ether"
+    )}`
+  );
 
-	let priceOfRequests = web3.utils.toWei("1", "ether")
-	let apiName = "ursinho"
+  let priceOfRequests = web3.utils.toWei("5", "ether");
+  let apiName = "viacep";
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  // const sale = await api.createSale(
-	// 	seller, 
-	// 	priceOfRequests, 
-	// 	apiName,
-	// 	{from: buyer, value: priceOfRequests}
-	// )
-=======
-=======
->>>>>>> Stashed changes
-  const sale = await api.createSale(
-		seller, 
-		priceOfRequests, 
-		apiName
-	)
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+  // const sale = await api.createSale(seller, priceOfRequests, apiName, {
+  //   from: buyer,
+  //   value: priceOfRequests,
+  // });
 
-	const inspectSale = await api.inspectSale(buyer)
-	console.log(inspectSale)
+  // const inspectSale = await api.inspectSale(buyer);
+  // console.log(inspectSale);
 
-	const inspectSaleApi = await api.inspectSaleApi(buyer, "ursinho")
-	console.log(inspectSaleApi)
+  const inspectSaleApi = await api.inspectSaleApi(buyer, "viacep");
+  console.log(inspectSaleApi);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	await api.makeRequest(
-		buyer,
-		"ursinho99",
-		{from: buyer, value: priceOfRequests}
-	)
-=======
-=======
->>>>>>> Stashed changes
-	// const errinho = await api.makeRequest(
-	// 	buyer,
-	// 	"ursinho12",
-	// 	{from: buyer, value: priceOfRequests}
-	// )
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+  //   address buyer,
+  //   string memory _apiName,
+  //   string memory _url,
+  //   string memory _bodyOfRequest,
+  //   string memory _method,
+  //   string memory _headers
 
-	// console.log(errinho.data[0])	
-	const inspectSaleApi2 = await api.inspectSaleApi(buyer, "ursinho")
-	// console.log(inspectSaleApi2)
+  await api.makeRequest(apiName, "http://localhost", "{}", "GET", "TEste", {
+    from: buyer,
+    value: priceOfRequests,
+  });
 
-  buyerBal = await web3.eth.getBalance(buyer)
-  sellerBal = await web3.eth.getBalance(seller)
-  storeOwnerBal = await web3.eth.getBalance(storeOwner)
+  // const errinho = await api.makeRequest(
+  // 	buyer,
+  // 	"ursinho12",
+  // 	{from: buyer, value: priceOfRequests}
+  // )
 
-  console.log(`Balance of buyer after sales | ${web3.utils.fromWei(buyerBal.toString(), 'ether')}`)
-  console.log(`Balance of seller after sales | ${web3.utils.fromWei(sellerBal.toString(), 'ether')}`)
-  console.log(`Balance of storeOwner after sales | ${web3.utils.fromWei(storeOwnerBal.toString(), 'ether')}`)
+  // console.log(errinho.data[0])
 
-  callback()
-}
+  buyerBal = await web3.eth.getBalance(buyer);
+  sellerBal = await web3.eth.getBalance(seller);
+  storeOwnerBal = await web3.eth.getBalance(storeOwner);
+
+  console.log(
+    `Balance of buyer after sales | ${web3.utils.fromWei(
+      buyerBal.toString(),
+      "ether"
+    )}`
+  );
+  console.log(
+    `Balance of seller after sales | ${web3.utils.fromWei(
+      sellerBal.toString(),
+      "ether"
+    )}`
+  );
+  console.log(
+    `Balance of storeOwner after sales | ${web3.utils.fromWei(
+      storeOwnerBal.toString(),
+      "ether"
+    )}`
+  );
+
+  callback();
+};
